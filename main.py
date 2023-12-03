@@ -113,6 +113,8 @@ async def main():
                 "1.Начать спам",
                 f"2.Обновить базу || {len(chats)} диалогов загружено.",
                 "3.Выход",
+                f"\nЗадержка между запросами: {settings.timeout}"
+
             ]
     
     for option in options:
