@@ -1,4 +1,4 @@
-phone=ВАШ НОМЕР ТЕЛЕФОНА
-api_id=ВАШ АЙДИ
-api_hash=ВАШ ХЕШ
+phone=79676514880
+api_id=2110117
+api_hash=3716da0d0d88a9317845ab7e20daf2a0
 timeout=1
