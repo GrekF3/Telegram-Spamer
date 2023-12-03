@@ -1,0 +1,4 @@
+phone=ВАШ НОМЕР ТЕЛЕФОНА
+api_id=ВАШ АЙДИ
+api_hash=ВАШ ХЕШ
+timeout=1

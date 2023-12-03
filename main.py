@@ -8,17 +8,17 @@ import pyfiglet
 from pyrogram import Client
 from pyrogram.errors import FloodWait
 
-app_version = 1.3
+from core import SpamerSettings
+
+settings = SpamerSettings()
+
+app_version = '0.8'
 ascii_art = pyfiglet.figlet_format(f"GrekF3 SPAMER {app_version}", font="slant")
 print(ascii_art)
 
-api_id = '2110117'
-api_hash = '3716da0d0d88a9317845ab7e20daf2a0'
-app = Client('my_account', api_id=api_id, api_hash=api_hash)
+app = Client(name=settings.phone, api_id=settings.api_id, api_hash=settings.api_hash, phone_number=settings.phone)
 
 file_path = "chats.json"
-
-
 def clear_console():
     system = platform.system()
     if system == "Windows":
@@ -46,7 +46,6 @@ async def spamer_bot(chats):
     await asyncio.sleep(1)
     print(f"Чатов загружено: {len(chats)}")
     if len(chats) > 1:
-        await asyncio.sleep(1)
         print('Начинаю спам')
         await asyncio.sleep(1)
         chats_size = len(chats)
@@ -56,7 +55,7 @@ async def spamer_bot(chats):
                 f"Отправил сообщение в {chat.get('name')} || {i}/{chats_size}"
             )
             i += 1
-            await asyncio.sleep(0.2)
+            await asyncio.sleep(int(settings.timeout))
     else:
         print("Чатов недостаточно для спама.")
         await main()
@@ -93,9 +92,26 @@ async def update_base():
 
 async def main():
 
+    if settings.check_all_fields_filled():
+        print('Настройки были загружены \n')
+        print(f'Ваш Api_Id: {settings.api_id}')
+        print(f'Ваш Api_Hash: {settings.api_hash}')
+        print(f'Ваш Phone: {settings.phone} \n')
+        print(f'Задержка между запросами: {int(settings.timeout)} \n')
+        await asyncio.sleep(2)
+        clear_console()
+        print(ascii_art)
+    else:
+        print('Настройки не были загружены. Проверьте файл settings.txt')
+        await asyncio.sleep(2)
+        sys.exit()
+
+
+
+    chats = await load_chats_from_file()
     options = [
                 "1.Начать спам",
-                "2.Обновить базу",
+                f"2.Обновить базу || {len(chats)} диалогов загружено.",
                 "3.Выход",
             ]
     
