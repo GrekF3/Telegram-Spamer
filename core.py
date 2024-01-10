@@ -6,6 +6,7 @@ class SpamerSettings:
         self.api_id = ''
         self.api_hash = ''
         self.timeout = ''
+
         self.load_settings_from_file(file_path)
         
 

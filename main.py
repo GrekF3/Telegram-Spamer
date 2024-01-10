@@ -22,10 +22,8 @@ app_version = '0.9'
 ascii_art = pyfiglet.figlet_format(f"GrekF3 SPAMER {app_version}", font="slant")
 print(ascii_art)
 
-
 # Инициализация клиента Pyrogram
 app = Client(name=settings.phone, api_id=settings.api_id, api_hash=settings.api_hash, phone_number=settings.phone)
-
 # Путь к файлу для сохранения чатов
 file_path = "chats.json"
 
@@ -44,7 +42,6 @@ def chat_dump(chats):
     with open(file_path, "w", encoding="utf-8") as json_file:
         json.dump(chats, json_file, ensure_ascii=False, indent=4)
 
-
 async def load_chats_from_file():
     """Загрузка чатов из файла"""
     if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
@@ -55,27 +52,29 @@ async def load_chats_from_file():
 
 
 async def spamer_bot(chats):
+
     """Логика спам-бота"""
-    clear_console()
-    print(pyfiglet.figlet_format("START", font="slant"))
-    await asyncio.sleep(1)
-    print(f"Чатов загружено: {len(chats)}")
-    
-    if len(chats) > 1:
-        print('Начинаю спам')
-        await asyncio.sleep(1)
-        chats_size = len(chats)
-        i = 1
-        for chat in chats:
-            print(f"Отправил сообщение в {chat.get('name')} || {i}/{chats_size}")
-            i += 1
-            await asyncio.sleep(int(settings.timeout))
-    else:
-        print("Чатов недостаточно для спама.")
-        await asyncio.sleep(1.5)
+    async with app:
         clear_console()
-        print(ascii_art)
-        await main()
+        print(pyfiglet.figlet_format("START", font="slant"))
+        await asyncio.sleep(1)
+        print(f"Чатов загружено: {len(chats)}")
+        
+        if len(chats) > 1:
+            print('Начинаю спам')
+            await asyncio.sleep(1)
+            chats_size = len(chats)
+            i = 1
+            for chat in chats:
+                print(f"Отправил сообщение в {chat.get('name')}  || {i}/{chats_size} \n Сообщение: {chat.get('spam_text')}")
+                i += 1
+                await asyncio.sleep(int(settings.timeout))
+        else:
+            print("Чатов недостаточно для спама.")
+            await asyncio.sleep(1.5)
+            clear_console()
+            print(ascii_art)
+            await main()
 
 
 async def update_base():
@@ -91,9 +90,11 @@ async def update_base():
                         if "SUPERGROUP" == dialog.chat.type.name:
                             dialog_id = dialog.chat.id
                             dialog_name = dialog.chat.title
+                            spam_text = 'Hello World'
                             chat = {
                                 "id": dialog_id,
                                 "name": dialog_name,
+                                "spam_text": spam_text,
                             }
                             chats.append(chat)
                             pbar.update(1)
