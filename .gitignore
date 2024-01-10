@@ -1,9 +1,4 @@
 /.venv
 /chats.json
-/my_account.session
-my_account.session-journal
+/__pycache__
 exe_json_settings.json
-__pycache__/core.cpython-311.pyc
-settings.txt
-settings.txt
-Telegram Spamer 0.9.zip
